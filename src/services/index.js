@@ -1,4 +1,5 @@
 import HTTP from '../libs/http.js';
+import { setPageData } from '../libs/utils.js';
 
 class Services extends HTTP {
   getNewsList (type, count) {
@@ -11,7 +12,8 @@ class Services extends HTTP {
           field: type
         },
         success(data){
-          resolve(data);
+          const pageData = setPageData(data.result.data, count);
+          resolve(pageData);
         },
         error(err){
           reject(err);

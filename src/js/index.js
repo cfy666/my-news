@@ -1,18 +1,31 @@
 import './imports.js';
 
-import service from '../services/index.js';
 import Header from '../components/Header';
+import NavBar from '../components/NavBar';
 
-async function getNewsList(){
-  const data = await service.getNewsList('top', 10);
-  return data;
-}
+import { NEWS_TYPE } from '../data'
+import service from '../services';
 
 ;((doc) => {
   const oApp = doc.querySelector('#app');
 
-  const init = () => {
+  const init = async () => {
     render();
+    await setNewsList();
+    bindEvent();
+  }
+
+  const config = {
+    type: 'top',
+    count: 10,
+    pageNum: 0,
+    isLoading: false
+  }
+
+  const newsData = {};
+
+  function bindEvent () {
+    NavBar.bindEvent(setType);
   }
 
   function render () {
@@ -23,8 +36,27 @@ async function getNewsList(){
       showRightIcon: true
     })
 
-    oApp.innerHTML += hederTpl;
+    const navBarTpl = NavBar.tpl(NEWS_TYPE);
+
+    oApp.innerHTML += hederTpl + navBarTpl;
   }
+
+  async function setNewsList(){
+    const { type, count } = config;
+
+    if(newsData[type]){
+      return;
+    }
+
+    newsData[type] = await service.getNewsList(type, count);
+    console.log(newsData);
+
+  }
+
+  function setType (type) {
+    config.type = type;
+  }
+
 
   init();
 })(document)
