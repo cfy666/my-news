@@ -31,7 +31,7 @@ export default {
     oNavBar.addEventListener('click', this._setNav.bind(this, oNavItems, setType), false);
   },
   _setNav (items, setType) {
-    //event在函数的最后一位
+    //event在函数参数的最后一位
     const tar = arguments[2].target;
     const className = tar.className.trim();
 

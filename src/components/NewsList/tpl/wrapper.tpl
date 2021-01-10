@@ -1,1 +1,1 @@
-<div class="new-list" style="top: .{{top}}rem"></div>
+<div class="news-list" style="top: .{{top}}rem"></div>
