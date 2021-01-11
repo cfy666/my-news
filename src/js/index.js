@@ -32,11 +32,15 @@ import {scrollToBottom } from '../libs/utils.js';
     bindEvent();
   }
 
+  function _scrollToBottom(){
+    scrollToBottom.call(null, getMoreList);
+  }
+
 
   function bindEvent () {
-    NavBar.bindEvent(setType);
     NewsList.bindEvent(oListWrapper, setCurrentNews);
-    window.addEventListener('scroll', scrollToBottom.bind(null, getMoreList), false);
+    window.addEventListener('scroll', _scrollToBottom, false);
+    NavBar.bindEvent(setType);
   }
 
   function render () {
@@ -72,6 +76,9 @@ import {scrollToBottom } from '../libs/utils.js';
 
     if(newsData[type]){
       renderList(newsData[type][pageNum]);
+      setTimeout(() => {
+        window.addEventListener('scroll', _scrollToBottom, false);
+      }, 1000);
       return;
     }
 
@@ -90,15 +97,17 @@ import {scrollToBottom } from '../libs/utils.js';
     setTimeout(() => {
       oListWrapper.innerHTML = '';
       renderList(newsData[type][pageNum]);
+      window.addEventListener('scroll', _scrollToBottom, false);
     }, 1500);
   }
 
   function setType (type) {
+    window.removeEventListener('scroll', _scrollToBottom, false);
     config.type = type;
     config.pageNum = 0;
     config.isLoading = false;
     oListWrapper.innerHTML = '';
-    setNewsList(); 
+    setNewsList();
   }
 
   function getMoreList(){

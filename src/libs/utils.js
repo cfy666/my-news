@@ -22,10 +22,7 @@ function setPageData(data, count){
 }
 
 function scrollToBottom(callback){
-  console.log(_getScrollHeight());
-  console.log(_getScrollTop() + _getWindowHeight());
   if(_getScrollTop() + _getWindowHeight() === _getScrollHeight()){
-
     callback();
   }
 }
